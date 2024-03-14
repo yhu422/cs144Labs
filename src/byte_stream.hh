@@ -3,7 +3,9 @@
 #include <cstdint>
 #include <string>
 #include <string_view>
-
+#include <deque>
+#include <algorithm>
+#include <iostream>
 class Reader;
 class Writer;
 
@@ -11,7 +13,6 @@ class ByteStream
 {
 public:
   explicit ByteStream( uint64_t capacity );
-
   // Helper functions (provided) to access the ByteStream's Reader and Writer interfaces
   Reader& reader();
   const Reader& reader() const;
@@ -24,7 +25,12 @@ public:
 protected:
   // Please add any additional state to the ByteStream here, and not to the Writer and Reader interfaces.
   uint64_t capacity_;
+  uint64_t available_capacity_;
+  uint64_t bytes_pushed_;
+  uint64_t bytes_popped_;
   bool error_ {};
+  bool closed_;
+  std::string stream_;
 };
 
 class Writer : public ByteStream
